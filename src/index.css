@@ -11,9 +11,49 @@ body {
   font-family: 'Karla', sans-serif;
 }
 
+.app{  
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 
-h1{
-  color: green;
+.quiz_title{
+  font-family: Karla;
+  font-size: 31px;
+  font-weight: 700;
+  line-height: 37px;
+  letter-spacing: 0em;
+  text-align: center;
+  color: #293264;
+  ;
+}
+
+.quiz_instruction{
+  font-family: Inter;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 19px;
+  letter-spacing: 0em;
+  text-align: center;
+
+}
+
+.startQuiz{
+  width: 193px;
+  height: 52px;
+  background: #4D5B9E;
+  border-radius: 15px;
+  border: none;
+  font-family: Inter;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 19px;
+  letter-spacing: 0em;
+  text-align: center;
+  color: #F5F7FB;
+  margin-left: 1.7rem;
+
 }
 
 .question{
@@ -30,7 +70,7 @@ h1{
   height: 19px;
   line-height: 19px;
   color: #293264;
-  ;
+  margin-bottom: 2rem;
 }
 
 .question-options{
@@ -51,4 +91,21 @@ h1{
   line-height: 12px;
   text-align: center;
   color: #293264;
+  cursor: pointer;
+}
+
+.btn-div{
+  margin-top: 2rem;
+  text-align: center;  
+}
+.checkAnswers{
+  color: #F5F7FB;
+  width: 120px;
+  height: 35px;
+  left: 215px;
+  top: 490px;
+  background: #4D5B9E;
+  border-radius: 10px;
+  border: none;
+ 
 }

@@ -1,37 +1,60 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom"
 import './index.css';
 import Question from "../src/components/question"
+import {nanoid} from "nanoid";
 
 export default function App() {
   const [quiz, setQuiz] = React.useState(false)
-  function startGame() {
-    return(
-      setQuiz(true)
-    )
+  const [questions, setQuestions] = React.useState([])
 
+  useEffect(() => {
+    fetch("https://opentdb.com/api.php?amount=5&category=22&difficulty=easy&type=multiple")
+    .then(res => res.json())
+    .then(data => setQuestions(data.results))
+  }, [])
+
+  function startQuiz(){
+    setQuiz(true)
   }
+ 
+  console.log(questions)
 
-  const questionElements = <Question/>
+  const id= nanoid()
+const questionnaireElement = questions.map((question,index, id) => {
   return (
-    <main>
+    <Question data={questions[index]} id={id} />
+  )
+
+})
+
+return (
+  <main>
       {
          !quiz?
-         <div className="App">
-           <h1>Quizzical</h1>
-           <p>Instructions on how to play the game</p>
-           <button
-           onClick={startGame}
+         <div className="app">
+           <h1 className="quiz_title">Quizzical</h1>
+           <p className="quiz_instruction">Instructions on how to play the game</p>
+           <button className="startQuiz"
+           onClick={startQuiz}
            >Start Quiz</button>
          </div>
-         :
-         <div>
-           {questionElements}
-         </div>
+         : questions.length > 0 ? 
+          <div>
+             {questionnaireElement}
+             <div className= "btn-div">
+               <button className="checkAnswers">Check Answers</button>
+             </div>
+             
+          </div>
+          
+          :
+          <h3>Loading .....</h3>
+         
+        
       }
-       
-    </main>
-   
-  );
+      
+  </main>
+);
 }
 
