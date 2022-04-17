@@ -78,6 +78,7 @@ body {
   grid-template-columns: repeat(4, auto);
   grid-template-rows: auto;
   grid-gap: 2rem;
+  margin-bottom: 1rem;
 }
 
 .option{
@@ -108,4 +109,14 @@ body {
   border-radius: 10px;
   border: none;
  
+}
+
+.loading{
+  font-family: Karla;
+  font-size: 31px;
+  font-weight: 700;
+  line-height: 37px;
+  letter-spacing: 0em;
+  text-align: center;
+  color: #293264; 
 }

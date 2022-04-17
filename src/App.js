@@ -1,12 +1,14 @@
 import React, { useEffect } from "react";
-import ReactDOM from "react-dom"
 import './index.css';
 import Question from "../src/components/question"
-import {nanoid} from "nanoid";
+
 
 export default function App() {
   const [quiz, setQuiz] = React.useState(false)
   const [questions, setQuestions] = React.useState([])
+  const [answerOption, setAnswerOption] = React.useState({
+    clicked: false
+  })
 
   useEffect(() => {
     fetch("https://opentdb.com/api.php?amount=5&category=22&difficulty=easy&type=multiple")
@@ -18,12 +20,20 @@ export default function App() {
     setQuiz(true)
   }
  
-  console.log(questions)
+  function handleClick() {
+     /* setAnswerOption(prevAnswerOption => {
+        return {
+          ...prevAnswerOption,
+          clicked: !prevAnswerOption
+        }
+      })*/
+      console.log("Hello hi")
+  }
 
-  const id= nanoid()
-const questionnaireElement = questions.map((question,index, id) => {
+
+const questionnaireElement = questions.map((question,index) => {
   return (
-    <Question data={questions[index]} id={id} />
+    <Question data={questions[index]} handleClick={handleClick} />
   )
 
 })
@@ -49,7 +59,7 @@ return (
           </div>
           
           :
-          <h3>Loading .....</h3>
+          <h3 className="loading">Loading .....</h3>
          
         
       }
