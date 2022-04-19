@@ -7,15 +7,12 @@ import {nanoid} from "nanoid";
 export default function App() {
   const [quiz, setQuiz] = React.useState(false)
   const [questions, setQuestions] = React.useState([])
-  const [answerOption, setAnswerOption] = React.useState({
-    clicked: false
-  })
 
   useEffect(() => {
     fetch("https://opentdb.com/api.php?amount=5&category=22&difficulty=easy&type=multiple")
     .then(res => res.json())
     .then(data => setQuestions(getQuestions(data.results)))
-  }, [quiz])
+  }, [])
 
   function startQuiz(){
     setQuiz(true)
@@ -35,13 +32,15 @@ export default function App() {
       return resetQuestions
   }
 
-
+console.log(questions)
   function settingAnswers(listOfAnswers, correctAnswer) {
     return listOfAnswers.map(answer => {
       return (
         {
           answer: answer,
           id: nanoid(),
+          correct: answer === correctAnswer? true : false,
+          isClicked: false
 
         }
       )
@@ -52,7 +51,8 @@ export default function App() {
     return answerList.sort(() => Math.random() - 0.5)
   }
 
-console.log(questions)
+
+
 const questionnaireElement = questions.map((question,index, id) => {
   return (
     <Question 
@@ -60,10 +60,46 @@ const questionnaireElement = questions.map((question,index, id) => {
     key={question.id} 
     id={question.id}
     answers ={question.answers}
+    holdAnswer={holdAnswer}
     />
   )
 
 })
+
+/*
+function holdAnswer(id){
+  setQuestions(prevQuestions => prevQuestions.map(question => {
+    if(question.id === id){
+      console.log("Hello")
+    }}))
+}
+*/
+
+
+function holdAnswer(answerId, questionId) {
+  setQuestions(prevQuestions => prevQuestions.map(question => {
+    if(question.id === questionId){
+      const answerList = question.answers.map(answer => {
+        if(answer.id === answerId || answer.isClicked) {
+          return (
+            {
+              ...answer,
+              isClicked: !answer.isClicked
+            }
+          )
+        } else {
+          return answer
+        }
+      })
+      return ({
+        ...question,
+        answers: answerList
+      })
+    } else {
+      return question
+    }
+  }))
+}
 
 return (
   <main>

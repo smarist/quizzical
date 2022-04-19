@@ -4,13 +4,17 @@ import Answer from "./answer"
 
 
 export default function Question(props) {
- 
+    function holdAnswer(id){
+        props.holdAnswer(id, props.id, props.isClicked)
+    }
     const answerElements = props.answers.map(answer=> {
         return (
             <Answer
             id={answer.id}
+            isClicked={answer.isClicked}
             key={answer.id}
-            answer={answer.answer}/>
+            answer={answer.answer}
+            holdAnswer={() => holdAnswer(answer.id, props.isClicked)}/>
         )
     })
 
@@ -25,6 +29,7 @@ export default function Question(props) {
                {answerElements}
             </div>
         </div>
+    
     )
     
 }
