@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import './index.css';
 import Question from "../src/components/question"
+import {nanoid} from "nanoid";
 
 
 export default function App() {
@@ -13,27 +14,53 @@ export default function App() {
   useEffect(() => {
     fetch("https://opentdb.com/api.php?amount=5&category=22&difficulty=easy&type=multiple")
     .then(res => res.json())
-    .then(data => setQuestions(data.results))
-  }, [])
+    .then(data => setQuestions(getQuestions(data.results)))
+  }, [quiz])
 
   function startQuiz(){
     setQuiz(true)
   }
- 
-  function handleClick() {
-     /* setAnswerOption(prevAnswerOption => {
-        return {
-          ...prevAnswerOption,
-          clicked: !prevAnswerOption
-        }
-      })*/
-      console.log("Hello hi")
+  
+  function getQuestions(listOfQuestions){
+      const resetQuestions = listOfQuestions.map(question => {
+        return (
+          {
+            id: nanoid(),
+            question: question.question,
+            correctAnswer: question.correct_answer,
+            answers: settingAnswers(shuffleAnswers([...question.incorrect_answers, question.correct_answer]), question.correct_answer)
+          }
+        )
+      })
+      return resetQuestions
   }
 
 
-const questionnaireElement = questions.map((question,index) => {
+  function settingAnswers(listOfAnswers, correctAnswer) {
+    return listOfAnswers.map(answer => {
+      return (
+        {
+          answer: answer,
+          id: nanoid(),
+
+        }
+      )
+    })
+  }
+
+  function shuffleAnswers(answerList) {
+    return answerList.sort(() => Math.random() - 0.5)
+  }
+
+console.log(questions)
+const questionnaireElement = questions.map((question,index, id) => {
   return (
-    <Question data={questions[index]} handleClick={handleClick} />
+    <Question 
+    question={question.question}  
+    key={question.id} 
+    id={question.id}
+    answers ={question.answers}
+    />
   )
 
 })
