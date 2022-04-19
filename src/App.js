@@ -1,42 +1,105 @@
 import React, { useEffect } from "react";
 import './index.css';
 import Question from "../src/components/question"
+import {nanoid} from "nanoid";
 
 
 export default function App() {
   const [quiz, setQuiz] = React.useState(false)
   const [questions, setQuestions] = React.useState([])
-  const [answerOption, setAnswerOption] = React.useState({
-    clicked: false
-  })
 
   useEffect(() => {
     fetch("https://opentdb.com/api.php?amount=5&category=22&difficulty=easy&type=multiple")
     .then(res => res.json())
-    .then(data => setQuestions(data.results))
+    .then(data => setQuestions(getQuestions(data.results)))
   }, [])
 
   function startQuiz(){
     setQuiz(true)
   }
- 
-  function handleClick() {
-     /* setAnswerOption(prevAnswerOption => {
-        return {
-          ...prevAnswerOption,
-          clicked: !prevAnswerOption
+  
+  function getQuestions(listOfQuestions){
+      const resetQuestions = listOfQuestions.map(question => {
+        return (
+          {
+            id: nanoid(),
+            question: question.question,
+            correctAnswer: question.correct_answer,
+            answers: settingAnswers(shuffleAnswers([...question.incorrect_answers, question.correct_answer]), question.correct_answer)
+          }
+        )
+      })
+      return resetQuestions
+  }
+
+console.log(questions)
+  function settingAnswers(listOfAnswers, correctAnswer) {
+    return listOfAnswers.map(answer => {
+      return (
+        {
+          answer: answer,
+          id: nanoid(),
+          correct: answer === correctAnswer? true : false,
+          isClicked: false
+
         }
-      })*/
-      console.log("Hello hi")
+      )
+    })
+  }
+
+  function shuffleAnswers(answerList) {
+    return answerList.sort(() => Math.random() - 0.5)
   }
 
 
-const questionnaireElement = questions.map((question,index) => {
+
+const questionnaireElement = questions.map((question,index, id) => {
   return (
-    <Question data={questions[index]} handleClick={handleClick} />
+    <Question 
+    question={question.question}  
+    key={question.id} 
+    id={question.id}
+    answers ={question.answers}
+    holdAnswer={holdAnswer}
+    />
   )
 
 })
+
+/*
+function holdAnswer(id){
+  setQuestions(prevQuestions => prevQuestions.map(question => {
+    if(question.id === id){
+      console.log("Hello")
+    }}))
+}
+*/
+
+
+function holdAnswer(answerId, questionId) {
+  setQuestions(prevQuestions => prevQuestions.map(question => {
+    if(question.id === questionId){
+      const answerList = question.answers.map(answer => {
+        if(answer.id === answerId || answer.isClicked) {
+          return (
+            {
+              ...answer,
+              isClicked: !answer.isClicked
+            }
+          )
+        } else {
+          return answer
+        }
+      })
+      return ({
+        ...question,
+        answers: answerList
+      })
+    } else {
+      return question
+    }
+  }))
+}
 
 return (
   <main>
