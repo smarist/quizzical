@@ -14,6 +14,8 @@ export default function Question(props) {
             isClicked={answer.isClicked}
             key={answer.id}
             answer={answer.answer}
+            correct={answer.correct}
+            checked={answer.checked}
             holdAnswer={() => holdAnswer(answer.id, props.isClicked)}/>
         )
     })

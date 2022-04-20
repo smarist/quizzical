@@ -112,6 +112,31 @@ body {
  
 }
 
+.score{
+  font-family: Inter;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 15px;
+  letter-spacing: 0em;
+  text-align: center;
+  margin-left: 10rem;
+
+}
+
+.newGame{
+  color: #F5F7FB;
+  width: 120px;
+  height: 35px;
+  left: 215px;
+  top: 490px;
+  background: #4D5B9E;
+  border-radius: 10px;
+  border: none;
+  margin-left: 6rem;
+  margin-top: 0.5rem;
+ 
+}
+
 .loading{
   font-family: Karla;
   font-size: 31px;
