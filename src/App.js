@@ -6,6 +6,7 @@ import {nanoid} from "nanoid";
 
 export default function App() {
   const [quiz, setQuiz] = React.useState(false)
+  const [game, setGame] = React.useState(false)
   const [questions, setQuestions] = React.useState([])
   const [checked, setChecked] = React.useState(false)
   const [score, setScore] = React.useState(0)
@@ -15,19 +16,16 @@ export default function App() {
     fetch("https://opentdb.com/api.php?amount=5&category=22&difficulty=easy&type=multiple")
     .then(res => res.json())
     .then(data => setQuestions(getQuestions(data.results)))
-  }, [])
+  }, [game])
 
   function startQuiz(){
     setQuiz(prevQuiz => !prevQuiz)
   }
 
   function newGame(){
-      setQuiz(prevQuiz => !prevQuiz)
+      setGame(prevQuiz => !prevQuiz)
       setScore(0)
       setChecked(false)
-      return(
-        questions
-      )
   }
   
   function getQuestions(listOfQuestions){
@@ -44,7 +42,7 @@ export default function App() {
       return resetQuestions
   }
 
-console.log(questions)
+
   function settingAnswers(listOfAnswers, correctAnswer) {
     return listOfAnswers.map(answer => {
       return (
@@ -61,7 +59,7 @@ console.log(questions)
       )
     })
   }
-console.log(score)
+
   function shuffleAnswers(answerList) {
     return answerList.sort(() => Math.random() - 0.5)
   }
@@ -146,7 +144,7 @@ return (
          !quiz?
          <div className="app">
               <h1 className="quiz_title">Quizzical</h1>
-              <p className="quiz_instruction">Instructions on how to play the game</p>
+              <p className="quiz_instruction">Test your knowledge in Geography 😀</p>
               <button className="startQuiz"
               onClick={startQuiz}
               >Start Quiz</button>
