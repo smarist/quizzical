@@ -144,7 +144,7 @@ return (
          !quiz?
          <div className="app">
               <h1 className="quiz_title">Quizzical</h1>
-              <p className="quiz_instruction">Test your knowledge in Geography 😀</p>
+              <p className="quiz_instruction">Test your knowledge in Geography <span>😀</span></p>
               <button className="startQuiz"
               onClick={startQuiz}
               >Start Quiz</button>
