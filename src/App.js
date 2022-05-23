@@ -2,6 +2,9 @@ import React, { useEffect } from "react";
 import './index.css';
 import Question from "../src/components/question"
 import {nanoid} from "nanoid";
+import axios from 'axios'
+import Loader from "./components/Loader";
+
 
 
 export default function App() {
@@ -13,22 +16,7 @@ export default function App() {
   
 
   useEffect(() => {
-    fetch("https://opentdb.com/api.php?amount=5&category=22&difficulty=easy&type=multiple")
-    .then(res => res.json())
-    .then(data => setQuestions(getQuestions(data.results)))
-  }, [game])
-
-  function startQuiz(){
-    setQuiz(prevQuiz => !prevQuiz)
-  }
-
-  function newGame(){
-      setGame(prevQuiz => !prevQuiz)
-      setScore(0)
-      setChecked(false)
-  }
-  
-  function getQuestions(listOfQuestions){
+    function getQuestions(listOfQuestions){
       const resetQuestions = listOfQuestions.map(question => {
         return (
           {
@@ -41,7 +29,21 @@ export default function App() {
       })
       return resetQuestions
   }
+    axios("https://opentdb.com/api.php?amount=5&category=22&difficulty=easy&type=multiple")
+    .then(res => setQuestions(getQuestions(res.data.results)))
+  }, [game])
 
+  function startQuiz(){
+    setQuiz(prevQuiz => !prevQuiz)
+  }
+
+  function newGame(){
+      setGame(prevQuiz => !prevQuiz)
+      setScore(0)
+      setChecked(false)
+  }
+  
+  
 
   function settingAnswers(listOfAnswers, correctAnswer) {
     return listOfAnswers.map(answer => {
@@ -144,7 +146,7 @@ return (
          !quiz?
          <div className="app">
               <h1 className="quiz_title">Quizzical</h1>
-              <p className="quiz_instruction">Test your knowledge in Geography <span>😀</span></p>
+              <p className="quiz_instruction">Test your knowledge in Geography</p>
               <button className="startQuiz"
               onClick={startQuiz}
               >Start Quiz</button>
@@ -168,13 +170,13 @@ return (
              
           </div>
           :
-          <h3 className="loading">Loading .....</h3>
+           <Loader/>
          
       
         
       }
       
   </main>
-);
+)
 }
 
